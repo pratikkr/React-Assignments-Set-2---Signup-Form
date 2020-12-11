@@ -1,5 +1,5 @@
 import React from "react";
-import "..styles/App.css";
+import "../styles/App.css";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ export default class Login extends React.Component {
       name: "",
       email: "",
       gender: "male",
-      phoneNumber: "",
+      phNo: "",
       password: "",
       errorMessage: "",
       userName: ""
@@ -20,19 +20,19 @@ export default class Login extends React.Component {
   };
 
   handleSubmit = () => {
-    const alphanueric = /^[0-9a-zA-Z]+$/;
+    const alphanumeric = /^[0-9a-zA-Z ]+$/;
     const numbers = /^\d+$/;
     if (
       this.state.name === "" ||
       this.state.email === "" ||
-      this.state.phoneNumber === "" ||
+      this.state.phNo === "" ||
       this.state.gender === "" ||
       this.state.password === ""
     ) {
       this.setState({ errorMessage: "All fields are mandatory", userName: "" });
       return;
     }
-    if (!this.state.name.match(alphanueric)) {
+    if (!this.state.name.match(alphanumeric)) {
       this.setState({ errorMessage: "Name is not alphanumeric", userName: "" });
       return;
     }
@@ -40,6 +40,7 @@ export default class Login extends React.Component {
       this.setState({ errorMessage: "Email must contain @", userName: "" });
       return;
     }
+
     if (!this.state.gender) {
       this.setState({
         errorMessage: "Please identify as male, female or others",
@@ -47,9 +48,16 @@ export default class Login extends React.Component {
       });
       return;
     }
+    if (!numbers.test(this.state.phNo)) {
+      this.setState({
+        errorMessage: "Phone Number must contain only numbers",
+        userName: ""
+      });
+      return;
+    }
     if (this.state.password.length < 6) {
       this.setState({
-        errorMessage: "Password must contain atleas  6 letters",
+        errorMessage: "Password must contain atleast 6 letters",
         userName: ""
       });
       return;
@@ -111,7 +119,7 @@ export default class Login extends React.Component {
           onChange={this.handleChange}
         />
         <button data-testid="submit" onClick={this.handleSubmit}>
-          submit
+          Submit
         </button>
       </div>
     );
